@@ -1,0 +1,4 @@
+﻿  LSystemCmd.cpp
+D:\VS2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1274,5): warning MSB8012: TargetPath(D:\Learning\CIS 660\MayaPluginHw2\x64\Debug\LSystemMaya.mll) does not match the Linker's OutputFile property value (D:\Learning\CIS 660\MayaPluginHw2\LSystemd.mll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+D:\VS2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1276,5): warning MSB8012: TargetName(LSystemMaya) does not match the Linker's OutputFile property value (LSystemd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+  MyPlugin.vcxproj -> D:\Learning\CIS 660\MayaPluginHw2\x64\Debug\LSystemMaya.mll

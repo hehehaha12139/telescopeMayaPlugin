@@ -1,0 +1,9 @@
+﻿D:\VS2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (LSystemMaya.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+cl : 命令行 warning D9025: 正在重写“/EHs”(用“/EHa”)
+  LSystemCmd.cpp
+  vec.cpp
+  正在生成代码...
+D:\VS2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1274,5): warning MSB8012: TargetPath(D:\Learning\CIS 660\Authoring tool\TelescopeMayaPlugin\x64\Release\TelescopeMaya.mll) does not match the Linker's OutputFile property value (D:\Learning\CIS 660\Authoring tool\TelescopeMayaPlugin\LSystem.mll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+D:\VS2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1276,5): warning MSB8012: TargetName(TelescopeMaya) does not match the Linker's OutputFile property value (LSystem). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+    正在创建库 .\Release/MyPlugin.lib 和对象 .\Release/MyPlugin.exp
+  MyPlugin.vcxproj -> D:\Learning\CIS 660\Authoring tool\TelescopeMayaPlugin\x64\Release\TelescopeMaya.mll

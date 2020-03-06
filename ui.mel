@@ -1,0 +1,126 @@
+if (`window -exists lSystemWindow`) deleteUI lSystemWindow;
+ if (`windowPref -exists lSystemWindow`) windowPref -remove lSystemWindow;
+
+string $content;
+
+proc browseFiles() 
+{
+    
+    string $content = "";
+    string $fileName[] = `fileDialog2 -fm 1 -fileFilter "Grammar Files(*.txt)"`;
+    int $fileId = fopen($fileName[0], "r");
+    string $nextLine = `fgetline $fileId`;
+    while(size($nextLine) > 0)
+    {
+        $content = $content + $nextLine;
+        $nextLine = `fgetline $fileId`;
+    }
+    scrollField -edit -cl grmText;
+    scrollField -edit -text $content grmText;
+}
+
+proc string getText(string $default)
+{
+    global string $content;
+    if($content == "")
+    {
+        return $default;    
+    }
+    return $content;
+}
+
+proc updateNode()
+{
+    if (`objExists lSystem`) delete lSystem;
+    if (`objExists lSystemShape`) delete lSystemShape; 
+    if (`objExists lSystemNode`) delete lSystemNode;
+    if (`objExists lSystemTime`) delete lSystemTime;
+    
+    createNode transform -n lSystem;
+    createNode mesh -n lSystemShape -p lSystem;
+    sets -add initialShadingGroup lSystemShape;
+    createNode LSystemNode -n lSystemNode;
+    createNode time -n lSystemTime;
+    connectAttr lSystemTime.outTime lSystemNode.time;
+    connectAttr lSystemNode.outGeo lSystemShape.inMesh;
+    
+    
+    float $angle = `floatSlider -q -v angleSlider`;
+    float $stepSize = `floatSlider -q -v stepSlider`;
+    int $iter = `intSlider -q -v iterSlider`;
+    string $grammar = `scrollField -q -text grmText`;
+    
+    
+    setAttr lSystemNode.angle $angle;
+    setAttr lSystemNode.step $stepSize;
+    setAttr lSystemNode.iteration $iter;
+    setAttr lSystemNode.grammar -type "string" $grammar;
+}
+
+proc updateAngleSlider()
+{
+    float $value = `floatField -q -v angleField`;
+    floatSlider -edit -v $value angleSlider;
+}
+
+proc updateAngleField()
+{
+    float $value = `floatSlider -q -v angleSlider`;
+    floatField -edit -v $value angleField;  
+}
+
+proc updateStepSlider()
+{
+    float $value = `floatField -q -v stepField`;
+    floatSlider -edit -v $value stepSlider;
+}
+
+proc updateStepField()
+{
+    float $value = `floatSlider -q -v stepSlider`;
+    floatField -edit -v $value stepField;  
+}
+
+proc updateIterSlider()
+{
+    int $value = `intField -q -v iterField`;
+    intSlider -edit -v $value iterSlider;
+}
+
+proc updateIterField()
+{
+    int $value = `intSlider -q -v iterSlider`;
+    intField -edit -v $value iterField;  
+}
+
+window -title "L-System Tree Generator" -resizeToFitChildren true lSystemWindow;
+columnLayout -adjustableColumn true -rowSpacing 10;
+    rowLayout -numberOfColumns 2 -columnWidth2 100 540 -columnAttach 1 "left" 10 -columnAttach 2 "right" 0;
+        text -label "Browse File";
+	    button -label "Browse.." -command "browseFiles()";
+	setParent ..;
+    scrollField -width 500 -height 300 -text "F\nF->F[+F]F[-F]F" grmText;
+    frameLayout -label "L-System Parameters" -collapsable true -collapse true -borderStyle "etchedIn";
+        columnLayout -adjustableColumn true;
+            rowLayout -numberOfColumns 3 -columnWidth3 120 80 120 -columnAttach 1 "left" 28 -columnAttach 2 "right" 5 -columnAttach 3 "left" 0;
+                text -label Iterations;
+                intField -value 2 -width 60 -changeCommand "updateIterSlider()" iterField ;
+                intSlider -minValue 0 -maxValue 10 -step 1 -changeCommand "updateIterField()" iterSlider;
+            setParent ..;
+            rowLayout -numberOfColumns 3 -columnWidth3 120 80 120 -columnAttach 1 "left" 28 -columnAttach 2 "right" 5 -columnAttach 3 "left" 0;
+                text -label Step Size;
+                floatField -value 1.0 -minValue 1.0 -maxValue 10.0 -changeCommand "updateStepSlider()" stepField;
+                floatSlider -value 1.0 -minValue 1.0 -maxValue 10.0 -step 0.5 -changeCommand "updateStepField()" stepSlider;
+            setParent ..;
+            rowLayout -numberOfColumns 3 -columnWidth3 120 80 120 -columnAttach 1 "left" 28 -columnAttach 2 "right" 5 -columnAttach 3 "left" 0;
+                text -label angle;
+                floatField -value 30.0 -minValue 0.0 -maxValue 90.0 -changeCommand "updateAngleSlider()" angleField;
+                floatSlider -value 30.0 -minValue 0.0 -maxValue 90.0 -step 1.0 -changeCommand "updateAngleField()" angleSlider;
+            setParent ..;
+        setParent ..;
+    setParent ..;
+    rowLayout -numberOfColumns 2 -columnWidth2 100 540 -columnAttach 1 "left" 10 -columnAttach 2 "right" 0;
+        button -label "Create" -command "updateNode()";
+	    button -label "Cancel";
+	setParent ..;
+showWindow lSystemWindow;
